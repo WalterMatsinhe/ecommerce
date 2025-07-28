@@ -57,12 +57,11 @@ const loginUser = async (req, res) => {
         message: 'User does not exist, please register first',
       });
 
-    const isMatch = await bcrypt.compare(password, checkUser.password);
-    if (!isMatch)
-      return res.json({
-        success: false,
-        message: 'Incorrect password, please try again',
-      });
+     const checkPasswordMattch = await bcrypt.compare(password, checkUser.password);
+     if(!checkPasswordMatch) return res.json({
+      success:false,
+      message: 'incorrect password! please try again'
+     })
 
     const token = jwt.sign(
       {
@@ -93,5 +92,31 @@ const loginUser = async (req, res) => {
     });
   }
 };
+//logout
+const logout = (req,res) => {
+  res.clearCookie('token').json({
+    success : true,
+    message : 'Logged out Successfully',
+  });
+}
+//auth middleware
+const authMiddleware = async (req,res,next) =>{
+  const token = req.cookies.token;
+  if(!token) return res.status(401).json({
+    success : false,
+    message : 'unauthorized user!'
+  });
 
-module.exports = { registerUser, loginUser };
+  try{
+    const decoded = jwt.verify(token, 'CLIENT_SECREt_KEY');
+    req.user = decoded;
+    next()
+  }catch(error){
+    res.status(401).json({
+      success: false,
+      message: 'Unauthorized user!',
+    });
+  }
+  
+}
+module.exports = { registerUser, loginUser, logout, authMiddleware};
