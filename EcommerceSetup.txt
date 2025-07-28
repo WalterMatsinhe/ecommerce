@@ -1,0 +1,39 @@
+Setup for creating a Mern Project:
+
+-Create two forlder(client, server);
+-On server folder install the following dependecies:
+  +(npm init)//Initializes a new Node.js project 
+  +(npm i bcryptjs )//Hashes passwords securely 
+  +(npm i cloudinary)//(a cloud image hosting service).
+  +(npm i cookie-parser)// Parses cookies attached to the client request
+  +(npm i cors)//Enables Cross-Origin Resource Sharing.
+  +(npm i express)//The main backend framework used to build server APIs.
+  +(npm i jsonwebtoken) Creates and verifies JWT (JSON Web Tokens)-for authentication
+  +(npm i mongose)//Connects and interacts with MongoDB
+  +(npm i multer)//Allows users to upload images/files from frontend to backend before optionally sending to Cloudinary
+  +(npm i nodemon)//Automatically restarts your server when file changes are detected.
+  ( npm i bcryptjs cloudinary cookie-parser cors dotenv express jsonwebtoken mongoose multer nodemon)//full
+-Create a .gitIgnore and add(
+node_modules
+.env
+dist/
+)
+-Create a file in server folder(server.js) and connect to the DB//This is the entry Point
+-create a client folder by intaling(npm create vite@latest)
+-Cd client (npm insatll)
+-On serve.js create an express application, connect to the DB, cookie-parser, and cors
+-GO to package.json and add script(Start, dev-nodemon(to have the updated data) )1
+-GO to client folder and install(
+	+ npm install @reduxjs/toolkit // (e.g. user auth, theme, cart
+	+ npm install react-redux //  Connects Redux to your React app.
+	+ npm install axios //A promise-based HTTP client to make API requests.
+	+ npm install react-router-dom // Adds routing (pages and navigation) to your React app.
+	(npm install @reduxjs/toolkit react-redux axios react-router-dom)-Full
+)
+-install ()
+-On the Client flder install tailwind (npm install -D tailwindcss@^3.4.10) 
+-Create the Tailwind config file folder by installing (npx tailwindcss init -p)
+-configurate jsconfig.json by following the instructions on the documentation n shadcn
+-instal shadcn npx (shadcn-ui@latest init);
+-npm install tailwindcss-animate
+
