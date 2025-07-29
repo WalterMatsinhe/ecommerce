@@ -1,34 +1,20 @@
-import React from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-function CheckAuth({ isAuthenticated, user, children }) {
-  const location = useLocation();
+const CheckAuth = ({ children }) => {
+  const { isAuthenticated, checkingAuth } = useSelector(state => state.auth);
 
-  // User is NOT authenticated and is trying to access protected routes
-  const isPublicRoute =
-    location.pathname.includes("/login") || location.pathname.includes("/register");
-
-  if (!isAuthenticated && !isPublicRoute) {
-    return <Navigate to="/auth/login" replace />;
+  // ✅ Wait for checkAuth to complete
+  if (checkingAuth) {
+    return <div>Loading...</div>;
   }
 
-  // User IS authenticated and is on login/register page — redirect based on role
-  if (isAuthenticated && isPublicRoute) {
-    return <Navigate to={user?.role === "admin" ? "/admin/dashboard" : "/shop/home"} replace />;
+  // ✅ Only redirect if truly unauthenticated AFTER checkAuth
+  if (!isAuthenticated) {
+    return <Navigate to="/auth/login" />;
   }
 
-  // Prevent non-admin users from accessing admin routes
-  if (isAuthenticated && user?.role !== "admin" && location.pathname.includes("/admin")) {
-    return <Navigate to="/unauth-page" replace />;
-  }
-
-  // Prevent admin users from accessing shop routes
-  if (isAuthenticated && user?.role === "admin" && location.pathname.includes("/shop")) {
-    return <Navigate to="/admin/dashboard" replace />;
-  }
-
-  // Everything is okay, allow access to the children
-  return <>{children}</>;
-}
+  return children;
+};
 
 export default CheckAuth;

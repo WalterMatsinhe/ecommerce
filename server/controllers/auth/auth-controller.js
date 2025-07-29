@@ -57,7 +57,7 @@ const loginUser = async (req, res) => {
         message: 'User does not exist, please register first',
       });
 
-     const checkPasswordMattch = await bcrypt.compare(password, checkUser.password);
+     const checkPasswordMatch = await bcrypt.compare(password, checkUser.password);
      if(!checkPasswordMatch) return res.json({
       success:false,
       message: 'incorrect password! please try again'
@@ -93,7 +93,7 @@ const loginUser = async (req, res) => {
   }
 };
 //logout
-const logout = (req,res) => {
+const logoutUser = (req,res) => {
   res.clearCookie('token').json({
     success : true,
     message : 'Logged out Successfully',
@@ -108,7 +108,7 @@ const authMiddleware = async (req,res,next) =>{
   });
 
   try{
-    const decoded = jwt.verify(token, 'CLIENT_SECREt_KEY');
+    const decoded = jwt.verify(token, 'CLIENT_SECRET_KEY');
     req.user = decoded;
     next()
   }catch(error){
@@ -119,4 +119,4 @@ const authMiddleware = async (req,res,next) =>{
   }
   
 }
-module.exports = { registerUser, loginUser, logout, authMiddleware};
+module.exports = { registerUser, loginUser, logoutUser, authMiddleware};

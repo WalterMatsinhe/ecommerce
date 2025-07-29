@@ -1,3 +1,6 @@
+import React from 'react';
+import { LayoutDashboard, ShoppingBasket, BadgeCheck } from 'lucide-react';
+
 export const registerFormControls = [
   {
     name: "userName",
@@ -37,4 +40,25 @@ export const loginFormControls = [
     componentType: "input",
     type: "password",
   },
+];
+
+export const adminSideBarMenuItems = [
+  {
+    id: 'dashBoard',
+    label: 'Dashboard',
+    path: '/admin/dashboard',
+    icon: React.createElement(LayoutDashboard),
+  },
+  {
+    id: 'products',
+    label: 'Products',
+    path: '/admin/products',
+    icon: React.createElement(ShoppingBasket)
+  },
+  {
+    id: 'orders',
+    label: 'Orders',
+    path: '/admin/orders',
+    icon: React.createElement(BadgeCheck)
+  }
 ];
