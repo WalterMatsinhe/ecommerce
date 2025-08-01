@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Commonform from '@/components/commun/form';
+import Commonform from '@/components/common/form';
 import { registerFormControls } from '@/config';
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";

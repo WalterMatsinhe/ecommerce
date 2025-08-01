@@ -1,5 +1,4 @@
 import React from 'react';
-import { LayoutDashboard, ShoppingBasket, BadgeCheck } from 'lucide-react';
 
 export const registerFormControls = [
   {
@@ -42,23 +41,65 @@ export const loginFormControls = [
   },
 ];
 
-export const adminSideBarMenuItems = [
+export const addProductFormElements = [
   {
-    id: 'dashBoard',
-    label: 'Dashboard',
-    path: '/admin/dashboard',
-    icon: React.createElement(LayoutDashboard),
+    label: 'Title',
+    name: 'title',
+    type: 'text',
+    placeholder: 'Enter product title',
+    componentType: 'input',
   },
   {
-    id: 'products',
-    label: 'Products',
-    path: '/admin/products',
-    icon: React.createElement(ShoppingBasket)
+    label: 'Description',
+    name: 'description',
+    type: 'text',
+    placeholder: 'Enter product description',
+    componentType: 'textarea',
   },
   {
-    id: 'orders',
-    label: 'Orders',
-    path: '/admin/orders',
-    icon: React.createElement(BadgeCheck)
-  }
+    label: 'Category',
+    name: 'category',
+    componentType: 'select',
+    options: [
+      { id: 'men', label: 'Men' },
+      { id: 'women', label: 'Women' },
+      { id: 'kids', label: 'Kids' },
+      { id: 'accessories', label: 'Accessories' },
+      { id: 'footwear', label: 'Footwear' },
+    ],
+  },
+  {
+    label: 'Brand',
+    name: 'brand',
+    componentType: 'select',
+    options: [
+      { id: 'nike', label: 'Nike' },
+      { id: 'adidas', label: 'Adidas' },
+      { id: 'puma', label: 'Puma' },
+      { id: 'levis', label: 'Levis' },
+      { id: 'lacoste', label: 'Lacoste' },
+      { id: 'zara', label: 'Zara' },
+    ],
+  },
+  {
+    label: 'Price',
+    name: 'price',
+    componentType: 'input',
+    type: 'number',
+    placeholder: 'Enter product price',
+  },
+  {
+    label: 'Sale Price',
+    name: 'salePrice',
+    componentType: 'input',
+    type: 'number',
+    placeholder: 'Enter sale price (optional)',
+  },
+  {
+    label: 'Total Stock',
+    name: 'totalStock',
+    componentType: 'input',
+    type: 'number',
+    placeholder: 'Enter total stock',
+  },
 ];

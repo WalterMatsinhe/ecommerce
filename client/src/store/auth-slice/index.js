@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// ✅ Initial state fixed: isLoading should be false
+// ✅ Initial state
 const initialState = {
   isAuthenticated: false,
   isLoading: false,
@@ -47,7 +47,7 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-// ✅ Check auth status
+// ✅ Check authentication status
 export const checkAuth = createAsyncThunk(
   'auth/checkAuth',
   async (_, thunkAPI) => {
@@ -70,6 +70,26 @@ export const checkAuth = createAsyncThunk(
   }
 );
 
+// ✅ Logout user (optional — for local Redux only)
+export const logoutUserRedux = createAsyncThunk(
+  'auth/logout',
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        'http://localhost:5000/api/auth/logout',
+        {},
+        { withCredentials: true }
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data || { success: false, message: 'Logout failed' }
+      );
+    }
+  }
+);
+
+// ✅ Auth slice
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -85,14 +105,14 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // ✅ Register
+      // 🔄 Register
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload.user || null;
-        state.isAuthenticated = false; // Don't auto-login after registration
+        state.isAuthenticated = false; // Register doesn't log in automatically
       })
       .addCase(registerUser.rejected, (state) => {
         state.isLoading = false;
@@ -100,7 +120,7 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
       })
 
-      // ✅ Login
+      // 🔄 Login
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
       })
@@ -115,9 +135,9 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
       })
 
-      // ✅ Check Auth
+      // 🔄 Check Auth
       .addCase(checkAuth.pending, (state) => {
-        state.checkingAuth = true; // ✅ FIXED: was incorrectly set to false
+        state.checkingAuth = true;
       })
       .addCase(checkAuth.fulfilled, (state, action) => {
         state.user = action.payload.success ? action.payload.user : null;
@@ -128,9 +148,16 @@ const authSlice = createSlice({
         state.user = null;
         state.isAuthenticated = false;
         state.checkingAuth = false;
+      })
+
+      // 🔄 Logout (from backend)
+      .addCase(logoutUserRedux.fulfilled, (state) => {
+        state.user = null;
+        state.isAuthenticated = false;
       });
   },
 });
 
+// ✅ Export actions and reducer
 export const { setUser, logout } = authSlice.actions;
 export default authSlice.reducer;
