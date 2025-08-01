@@ -7,7 +7,7 @@ import AdminOrders from './pages/admin-view/orders';
 import AdminProducts from './pages/admin-view/products';
 import AuthLogin from './pages/auth/login';
 import AuthRegister from './pages/auth/register';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import ShoppingLayout from './components/shopping-view/layout';
 import ShoppingHome from './pages/shopping-view/home';
 import ShoppingListing from './pages/shopping-view/listing';
@@ -39,6 +39,8 @@ function App() {
           <Route path='login' element={<AuthLogin />} />
           <Route path='register' element={<AuthRegister />} />
         </Route>
+
+        <Route path='/' element={<Navigate to='/auth/login' replace />} />
 
         {/* ✅ Protected Admin Routes */}
         <Route path='/admin' element={

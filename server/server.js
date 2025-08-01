@@ -18,10 +18,10 @@ const PORT = process.env.PORT || 5000;
 // CORS configuration
 app.use(
   cors({
-    origin: 'http://localhost:5173', // ✅ no space
+    origin: 'http://localhost:5173', 
     methods: ['GET', 'POST', 'DELETE', 'PUT'],
     allowedHeaders: [
-      'Content-Type', // ✅ corrected casing
+      'Content-Type', 
       'Authorization',
       'Cache-Control',
       'Expires',
