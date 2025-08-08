@@ -103,3 +103,64 @@ export const addProductFormElements = [
     placeholder: 'Enter total stock',
   },
 ];
+
+export const sortOptions= {
+  category : [
+    {id: 'price-lowtoHigh', label:'Price: Low to High'},
+    {id: 'price-HightoLow', label:'Price: High to Low'},
+    {id: 'title-atoz', label:'Title: A to Z'},
+    {id: 'title-ztoa', label:'Price: Z to A'},
+  ]
+}
+
+export const shoppingViewHeaderMenuItems= [
+  {
+    id : 'home',
+    label : 'Home',
+    path : '/shop/home'
+  },
+  {
+    id : 'men',
+    label : 'Men',
+    path : '/shop/listing'
+  },
+  {
+    id : 'woman',
+    label : 'Woman',
+    path : '/shop/listing'
+  },
+   
+   {
+    id : 'kids',
+    label : 'Kids',
+    path : '/shop/listing'
+  },
+  {
+    id : 'footwear',
+    label : 'Footwear',
+    path : '/shop/listing'
+  },
+  {
+    id : 'accessories',
+    label : 'Acessories',
+    path : '/shop/listing'
+  },
+];
+
+export const filterOptions= {
+  category : [
+    {id: 'men', label:'Men'},
+    {id: 'women', label:'Women'},
+    {id: 'kids', label:'Kids'},
+    {id: 'accessories', label:'Accessories'},
+    {id: 'footwear', label:'Footwear'},
+  ],
+  brand : [
+    {id: 'men', label:'Men'},
+    {id: 'women', label:'Women'},
+    {id: 'kids', label:'Kids'},
+    {id: 'accessories', label:'Accessories'},
+    {id: 'footwear', label:'Footwear'},
+  ],
+
+}

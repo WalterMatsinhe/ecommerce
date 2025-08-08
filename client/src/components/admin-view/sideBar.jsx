@@ -37,7 +37,7 @@ function MenuItems({setOpen}) {
             navigate(menuItem.path);
             if (setOpen) setOpen(false);
           }}
-          className="flex cursor-pointer text-xl items-center gap-2 rounded-md px-3 py-2 text-muted-foreground hover:bg-muted hover:bg-primary"
+          className="flex cursor-pointer text-xl items-center gap-2 rounded-md px-3 py-2 text-muted-foreground hover:bg-primary hover:scale-115 duration-200 "
         >
           {menuItem.icon}
           <span>{menuItem.label}</span>
@@ -74,7 +74,9 @@ function AdminSideBar({open,setOpen}) {
           <ChartNoAxesCombined size={30} />
           <h1 className="text-2xl font-extrabold">Admin Panel</h1>
         </div>
-        <MenuItems/>
+        <div>
+          <MenuItems/>
+        </div>
       </aside>
     </Fragment>
   );

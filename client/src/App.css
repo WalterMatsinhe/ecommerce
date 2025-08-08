@@ -63,8 +63,7 @@
 }
 
 @layer base {
-  :root {
-    --background-image: url('/light.png');
+  :root { 
     --foreground: 222 47% 11%;
 
     --card: 0 0% 95%;

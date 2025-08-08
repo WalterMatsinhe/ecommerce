@@ -9,6 +9,7 @@ const initialState = {
   user: null,
 };
 
+
 // ✅ Register user
 export const registerUser = createAsyncThunk(
   'auth/register',
@@ -47,6 +48,19 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+// ✅ Logout user
+export const logoutUser = createAsyncThunk(
+  'auth/logout',
+  async () => {
+    const response = await axios.post(
+      'http://localhost:5000/api/auth/logout',
+      {},
+      { withCredentials: true }
+    );
+    return response.data;
+  }
+);
+
 // ✅ Check authentication status
 export const checkAuth = createAsyncThunk(
   'auth/checkAuth',
@@ -65,25 +79,6 @@ export const checkAuth = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(
         error.response?.data || { success: false, message: 'Unauthorized' }
-      );
-    }
-  }
-);
-
-// ✅ Logout user (optional — for local Redux only)
-export const logoutUserRedux = createAsyncThunk(
-  'auth/logout',
-  async (_, thunkAPI) => {
-    try {
-      const response = await axios.post(
-        'http://localhost:5000/api/auth/logout',
-        {},
-        { withCredentials: true }
-      );
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(
-        error.response?.data || { success: false, message: 'Logout failed' }
       );
     }
   }
@@ -150,8 +145,14 @@ const authSlice = createSlice({
         state.checkingAuth = false;
       })
 
-      // 🔄 Logout (from backend)
-      .addCase(logoutUserRedux.fulfilled, (state) => {
+      // ✅ Logout
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.isLoading = false;
+        state.user = null;
+        state.isAuthenticated = false;
+      })
+      .addCase(logoutUser.rejected, (state) => {
+        state.isLoading = false;
         state.user = null;
         state.isAuthenticated = false;
       });
