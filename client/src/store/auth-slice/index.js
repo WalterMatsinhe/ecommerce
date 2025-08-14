@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// ✅ Initial state
 const initialState = {
   isAuthenticated: false,
   isLoading: false,
@@ -9,21 +8,22 @@ const initialState = {
   user: null,
 };
 
+// ✅ Axios default config for cookies
+axios.defaults.withCredentials = true;
 
 // ✅ Register user
 export const registerUser = createAsyncThunk(
-  'auth/register',
+  "auth/register",
   async (formData, thunkAPI) => {
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/auth/register',
-        formData,
-        { withCredentials: true }
+        "http://localhost:5000/api/auth/register",
+        formData
       );
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(
-        error.response?.data || { success: false, message: 'Unknown error' }
+        error.response?.data || { success: false, message: "Unknown error" }
       );
     }
   }
@@ -31,62 +31,50 @@ export const registerUser = createAsyncThunk(
 
 // ✅ Login user
 export const loginUser = createAsyncThunk(
-  'auth/login',
+  "auth/login",
   async (formData, thunkAPI) => {
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/auth/login',
-        formData,
-        { withCredentials: true }
+        "http://localhost:5000/api/auth/login",
+        formData
       );
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(
-        error.response?.data || { success: false, message: 'Unknown error' }
+        error.response?.data || { success: false, message: "Unknown error" }
       );
     }
   }
 );
 
 // ✅ Logout user
-export const logoutUser = createAsyncThunk(
-  'auth/logout',
-  async () => {
-    const response = await axios.post(
-      'http://localhost:5000/api/auth/logout',
-      {},
-      { withCredentials: true }
-    );
-    return response.data;
-  }
-);
+export const logoutUser = createAsyncThunk("auth/logout", async () => {
+  const response = await axios.post("http://localhost:5000/api/auth/logout", {});
+  return response.data;
+});
 
 // ✅ Check authentication status
 export const checkAuth = createAsyncThunk(
-  'auth/checkAuth',
+  "auth/checkAuth",
   async (_, thunkAPI) => {
     try {
       const response = await axios.get(
-        'http://localhost:5000/api/auth/check-auth',
+        "http://localhost:5000/api/auth/check-auth",
         {
-          withCredentials: true,
-          headers: {
-            'Cache-Control': 'no-store',
-          },
+          headers: { "Cache-Control": "no-store" },
         }
       );
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(
-        error.response?.data || { success: false, message: 'Unauthorized' }
+        error.response?.data || { success: false, message: "Unauthorized" }
       );
     }
   }
 );
 
-// ✅ Auth slice
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     setUser: (state, action) => {
@@ -107,7 +95,8 @@ const authSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload.user || null;
-        state.isAuthenticated = false; // Register doesn't log in automatically
+        // ✅ if backend logs in immediately, set this to true
+        state.isAuthenticated = !!action.payload.success;
       })
       .addCase(registerUser.rejected, (state) => {
         state.isLoading = false;
@@ -159,6 +148,5 @@ const authSlice = createSlice({
   },
 });
 
-// ✅ Export actions and reducer
 export const { setUser, logout } = authSlice.actions;
 export default authSlice.reducer;

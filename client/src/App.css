@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 @theme {
   --color-border: hsl(var(--border));
   --color-background: hsl(var(--background));
@@ -63,29 +65,29 @@
 }
 
 @layer base {
-  :root { 
+  :root {
+    --background-image: url('/light.png');
     --foreground: 222 47% 11%;
 
     --card: 0 0% 95%;
 
-    --primary: 2 100% 55%;
-    --primary-foreground:0 0% 0%%;
+    --primary: 205 100% 50%;
+    --primary-foreground: 210 40% 98%;
 
-    --border: 2 100% 55%;
-    
+    --border: 205 100% 50%;
   }
 
   .dark {
     --background-image: url('/dark.png');
-
+    --background: 0 0% 0%;
     --foreground: 0 0% 98%;
 
     --card: 0 0% 10%;
 
-    --primary: 130 99% 45%;
+    --primary: 205 100% 50%;
     --primary-foreground: 210 31% 91%;
 
-    --border: 130 99% 45;
+    --border: 205 100% 50%;
   }
 
   * {
@@ -130,13 +132,12 @@
 
 @utility text-glow {
   @apply relative;
- text-shadow: 0 0 15px rgba(34, 197, 94, 0.8);
+  text-shadow: 0 0 15px rgba(0, 124, 176, 155.5);
 }
 
 @utility card-hover {
   @apply transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg;
 }
-
 
 @utility gradient-border {
   @apply relative rounded-md;
@@ -150,15 +151,6 @@
          transition-all duration-300 hover:shadow-[0_0_1px_rgba(0,124,176,5.5)]
          hover:scale-105 active:scale-95;
 }
-@utility subscribe-button{
-  @apply bg-red-600  text-white p-2 w-44 rounded-xl  flex justify-center items-center mt-4 hover:scale-105 active:scale-95
-}
-
-@utility toggle-button {
-  @apply px-6 py-2 rounded-full bg-primary text-primary-foreground font-medium 
-         transition-all duration-300 hover:shadow-[0_0_1px_rgba(0,124,176,5.5)]
-         hover:scale-105 active:scale-95;
-}
 
 #root {
   max-width: 100%;
@@ -166,3 +158,39 @@
   padding: 0;
   text-align: center;
 }
+
+@theme inline {
+  --animate-aurora: aurora 8s ease-in-out infinite alternate;
+  @keyframes aurora {
+  0% {
+    background-position: 0% 50%;
+    transform: rotate(-5deg) scale(0.9);
+    }
+  25% {
+    background-position: 50% 100%;
+    transform: rotate(5deg) scale(1.1);
+    }
+  50% {
+    background-position: 100% 50%;
+    transform: rotate(-3deg) scale(0.95);
+    }
+  75% {
+    background-position: 50% 0%;
+    transform: rotate(3deg) scale(1.05);
+    }
+  100% {
+    background-position: 0% 50%;
+    transform: rotate(-5deg) scale(0.9);
+    }
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-none;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+

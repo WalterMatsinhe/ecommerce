@@ -8,9 +8,7 @@ import {
   SheetTitle,
   SheetDescription,
 } from "@/components/ui/sheet";
-import { toast } from "sonner";
-import { addProductFormElements } from "@/config";
-import {
+import { toast } from "sonner";import {
   addNewProduct,
   deleteProduct,
   editProduct,

@@ -146,6 +146,23 @@ export const shoppingViewHeaderMenuItems= [
     path : '/shop/listing'
   },
 ];
+export const categoryOptionsMap = {
+  'men' : 'Men',
+  'women' : 'Woman',
+  'kids' : 'Kids',
+  'accessories' : 'Accessories',
+  'footwear' : 'Footwear',
+}
+
+
+export const brandOptionsMap = {
+  'nike' : 'Nike',
+  'adidas' : 'Adidas',
+  'puma' : 'Puma',
+  'levis' : 'Levis',
+  'lacoste' : 'Lacoste',
+  'zara' : 'Zara',
+}
 
 export const filterOptions= {
   category : [
@@ -156,11 +173,11 @@ export const filterOptions= {
     {id: 'footwear', label:'Footwear'},
   ],
   brand : [
-    {id: 'men', label:'Men'},
-    {id: 'women', label:'Women'},
-    {id: 'kids', label:'Kids'},
-    {id: 'accessories', label:'Accessories'},
-    {id: 'footwear', label:'Footwear'},
+    {id: 'nike', label:'Nike'},
+    {id: 'adidas', label:'Adidas'},
+    {id: 'puma', label:'Puma'},
+    {id: 'levi', label:'Levi'},
+    {id: 'zara', label:'Zara'},
+    {id: 'Lacoste', label:'Lacoste'},
   ],
-
 }

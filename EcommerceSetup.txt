@@ -19,9 +19,10 @@ node_modules
 dist/
 )
 -Create a file in server folder(server.js) and connect to the DB//This is the entry Point
+
 -create a client folder by intaling(npm create vite@latest)
 -Cd client (npm insatll)
--On serve.js create an express application, connect to the DB, cookie-parser, and cors
+-On server.js create an express application, connect to the DB, cookie-parser, and cors
 -GO to package.json and add script(Start, dev-nodemon(to have the updated data) )1
 -GO to client folder and install(
 	+ npm install @reduxjs/toolkit // (e.g. user auth, theme, cart
@@ -36,4 +37,6 @@ dist/
 -configurate jsconfig.json by following the instructions on the documentation n shadcn
 -instal shadcn npx (shadcn-ui@latest init);
 -npm install tailwindcss-animate
+install @radix-ui/react-avatar
+
 

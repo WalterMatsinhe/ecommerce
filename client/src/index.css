@@ -20,73 +20,52 @@
   --animate-meteor: meteor 5s linear infinite;
 
   @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
   }
   @keyframes pulse-subtle {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.8;
-    }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
   }
   @keyframes fade-in {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
   @keyframes meteor {
-    0% {
-      transform: rotate(215deg) translateX(0);
-      opacity: 1;
-    }
-    70% {
-      opacity: 1;
-    }
-    100% {
-      transform: rotate(215deg) translateX(-500px);
-      opacity: 0;
-    }
+    0% { transform: rotate(215deg) translateX(0); opacity: 1; }
+    70% { opacity: 1; }
+    100% { transform: rotate(215deg) translateX(-500px); opacity: 0; }
   }
 }
 
 @layer base {
   :root {
-   
     --foreground: 222 47% 11%;
-
     --card: 0 0% 95%;
 
-    --primary: 130 99% 45%;
-    --primary-foreground:0 0% 0%%;
+    /* RED in light mode */
+    --primary: 0 85% 50%;
+    --color-primary: hsl(0 85% 50%);
+    --primary-foreground: 0 0% 100%;
+    --color-primary-foreground: hsl(0 0% 100%);
 
-    --border: 130 99% 45%
-    
+    --border: 0 85% 50%;
+    --color-border: hsl(0 85% 50%);
   }
 
   .dark {
     --background-image: url('/dark.png');
-
     --foreground: 0 0% 98%;
-
     --card: 0 0% 10%;
 
-    --primary: 130 99% 45%;
-    --primary-foreground: 210 31% 91%;
+    /* RED in dark mode */
+    --primary: 0 85% 50%;
+    --color-primary: hsl(0 85% 50%);
+    --primary-foreground: 0 0% 100%;
+    --color-primary-foreground: hsl(0 0% 100%);
 
-    --border: 130 99% 45;
+    --border: 0 85% 50%;
+    --color-border: hsl(0 85% 50%);
   }
 
   * {
@@ -112,32 +91,21 @@
   margin-inline: auto;
   padding-inline: 2rem;
 
-  @media (width >= 640px) {
-    max-width: 640px;
-  }
-  @media (width >= 768px) {
-    max-width: 768px;
-  }
-  @media (width >= 1024px) {
-    max-width: 1024px;
-  }
-  @media (width >= 1280px) {
-    max-width: 1280px;
-  }
-  @media (width >= 1400px) {
-    max-width: 1400px;
-  }
+  @media (width >= 640px) { max-width: 640px; }
+  @media (width >= 768px) { max-width: 768px; }
+  @media (width >= 1024px) { max-width: 1024px; }
+  @media (width >= 1280px) { max-width: 1280px; }
+  @media (width >= 1400px) { max-width: 1400px; }
 }
 
 @utility text-glow {
   @apply relative;
- text-shadow: 0 0 15px rgba(2, 230, 56);
+  text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
 }
 
 @utility card-hover {
   @apply transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg;
 }
-
 
 @utility gradient-border {
   @apply relative rounded-md;
@@ -148,16 +116,17 @@
 
 @utility cosmic-button {
   @apply px-6 py-2 rounded-full bg-primary text-primary-foreground font-medium 
-         transition-all duration-300 hover:shadow-[0_0_1px_rgba(0,124,176,5.5)]
+         transition-all duration-300 hover:shadow-[0_0_10px_rgba(255,0,0,0.5)]
          hover:scale-105 active:scale-95;
 }
-@utility subscribe-button{
-  @apply bg-red-600  text-white p-2 w-44 rounded-xl  flex justify-center items-center mt-4 hover:scale-105 active:scale-95
+
+@utility subscribe-button {
+  @apply bg-red-600 text-white p-2 w-44 rounded-xl flex justify-center items-center mt-4 hover:scale-105 active:scale-95;
 }
 
 @utility toggle-button {
   @apply px-6 py-2 rounded-full bg-primary text-primary-foreground font-medium 
-         transition-all duration-300 hover:shadow-[0_0_1px_rgba(0,124,176,5.5)]
+         transition-all duration-300 hover:shadow-[0_0_10px_rgba(255,0,0,0.5)]
          hover:scale-105 active:scale-95;
 }
 

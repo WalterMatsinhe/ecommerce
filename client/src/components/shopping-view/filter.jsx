@@ -1,9 +1,10 @@
 import React, { Fragment } from "react";
 import { filterOptions } from "@/config";
 import { Label } from "../ui/label";
-import { Separator } from "@radix-ui/react-select";
+import { Separator } from "@/components/ui/separator"; // better than @radix-ui/react-select Separator
+import { Checkbox } from "@/components/ui/checkbox";
 
-function ProductFilter() {
+function ProductFilter({ filters, handleFilter }) {
   return (
     <div className="bg-background rounded-lg shadow-sm">
       <div className="p-4 border-b">
@@ -14,19 +15,28 @@ function ProductFilter() {
           <Fragment key={keyItem}>
             <div>
               <h3 className="text-base font-bold flex items-start">{keyItem}</h3>
-              <div className="grid gap-3 mt-5 ">
+              <div className="grid gap-3 mt-5">
                 {filterOptions[keyItem].map((option) => (
                   <Label
                     key={option.id}
                     className="flex items-center gap-2 cursor-pointer"
                   >
-                    <input type="checkbox" className="form-checkbox" />
+                    <Checkbox
+                      checked={
+                        filters &&
+                        filters[keyItem] &&
+                        filters[keyItem].includes(option.id)
+                      }
+                      onCheckedChange={(checked) =>
+                        handleFilter(keyItem, option.id, checked)
+                      }
+                    />
                     {option.label}
                   </Label>
                 ))}
               </div>
             </div>
-            <Separator/>
+            <Separator />
           </Fragment>
         ))}
       </div>

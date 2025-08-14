@@ -20,27 +20,35 @@ function UserCartWrapper({ cartItems, setOpenCartSheet }) {
       : 0;
 
   return (
-    <SheetContent className="sm:max-w-md">
+    <SheetContent className="sm:max-w-md bg-white">
       <SheetHeader>
         <SheetTitle>Your Cart</SheetTitle>
       </SheetHeader>
+
       <div className="mt-8 space-y-4">
         {cartItems && cartItems.length > 0
-          ? cartItems.map((item) => <UserCartItemsContent cartItem={item} />)
+          ? cartItems.map((item, index) => (
+              <UserCartItemsContent
+                cartItem={item}
+                key={item._id || item.id || `cart-item-${index}`} // ✅ Guaranteed unique key
+              />
+            ))
           : null}
       </div>
+
       <div className="mt-8 space-y-4">
-        <div className="flex justify-between">
+        <div className="flex justify-between ml-4 mr-4">
           <span className="font-bold">Total</span>
           <span className="font-bold">${totalCartAmount}</span>
         </div>
       </div>
+
       <Button
         onClick={() => {
           navigate("/shop/checkout");
           setOpenCartSheet(false);
         }}
-        className="w-full mt-6"
+        className="px-4 mt-6 ml-4 mr-4"
       >
         Checkout
       </Button>

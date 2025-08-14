@@ -6,36 +6,38 @@ import { toast } from "sonner";
 
 function UserCartItemsContent({ cartItem }) {
   const { user } = useSelector((state) => state.auth);
- const { cartItems = { items: [] } } = useSelector((state) => state.shopCart || {});
- const { productList } = useSelector((state) => state.shopProducts);
-  const dispatch = useDispatch();
   
+  // ✅ FIXED: Handle cart state structure properly
+  const cartState = useSelector((state) => state.shopCart || {});
+  const cartItems = cartState.cartItems || [];
+  
+  const { productList } = useSelector((state) => state.shopProducts);
+  const dispatch = useDispatch();
 
   function handleUpdateQuantity(getCartItem, typeOfAction) {
-    if (typeOfAction == "plus") {
-      let getCartItems = cartItems.items || [];
-
-      if (getCartItems.length) {
-        const indexOfCurrentCartItem = getCartItems.findIndex(
+    if (typeOfAction === "plus") {
+      // ✅ FIXED: Use the correct cartItems structure
+      if (cartItems.length) {
+        const indexOfCurrentCartItem = cartItems.findIndex(
           (item) => item.productId === getCartItem?.productId
         );
 
         const getCurrentProductIndex = productList.findIndex(
           (product) => product._id === getCartItem?.productId
         );
-        const getTotalStock = productList[getCurrentProductIndex].totalStock;
 
-        console.log(getCurrentProductIndex, getTotalStock, "getTotalStock");
+        if (getCurrentProductIndex > -1) {
+          const getTotalStock = productList[getCurrentProductIndex].totalStock;
 
-        if (indexOfCurrentCartItem > -1) {
-          const getQuantity = getCartItems[indexOfCurrentCartItem].quantity;
-          if (getQuantity + 1 > getTotalStock) {
-            toast({
-              title: `Only ${getQuantity} quantity can be added for this item`,
-              variant: "destructive",
-            });
+          console.log(getCurrentProductIndex, getTotalStock, "getTotalStock");
 
-            return;
+          if (indexOfCurrentCartItem > -1) {
+            const getQuantity = cartItems[indexOfCurrentCartItem].quantity;
+            if (getQuantity + 1 > getTotalStock) {
+              // ✅ FIXED: Correct toast usage
+              toast.error(`Only ${getQuantity} quantity can be added for this item`);
+              return;
+            }
           }
         }
       }
@@ -43,7 +45,7 @@ function UserCartItemsContent({ cartItem }) {
 
     dispatch(
       updateCartQuantity({
-        userId: user?.id,
+        userId: user?.id || user?._id, // Handle both possible ID formats
         productId: getCartItem?.productId,
         quantity:
           typeOfAction === "plus"
@@ -51,23 +53,36 @@ function UserCartItemsContent({ cartItem }) {
             : getCartItem?.quantity - 1,
       })
     ).then((data) => {
-      if (data?.payload?.success) {
-        toast({
-          title: "Cart item is updated successfully",
-        });
+      // ✅ FIXED: Check response structure properly
+      if (data?.payload?.success || data?.payload) {
+        // ✅ FIXED: Correct toast usage
+        toast.success("Cart item updated successfully");
+      } else {
+        toast.error("Failed to update cart item");
       }
+    }).catch((error) => {
+      console.error("Update quantity error:", error);
+      toast.error("Failed to update cart item");
     });
   }
 
   function handleCartItemDelete(getCartItem) {
     dispatch(
-      deleteCartItem({ userId: user?.id, productId: getCartItem?.productId })
+      deleteCartItem({ 
+        userId: user?.id || user?._id, // Handle both possible ID formats
+        productId: getCartItem?.productId 
+      })
     ).then((data) => {
-      if (data?.payload?.success) {
-        toast({
-          title: "Cart item is deleted successfully",
-        });
+      // ✅ FIXED: Check response structure properly
+      if (data?.payload?.success || data?.payload) {
+        // ✅ FIXED: Correct toast usage
+        toast.success("Cart item deleted successfully");
+      } else {
+        toast.error("Failed to delete cart item");
       }
+    }).catch((error) => {
+      console.error("Delete cart item error:", error);
+      toast.error("Failed to delete cart item");
     });
   }
 
@@ -99,7 +114,7 @@ function UserCartItemsContent({ cartItem }) {
             onClick={() => handleUpdateQuantity(cartItem, "plus")}
           >
             <Plus className="w-4 h-4" />
-            <span className="sr-only">Decrease</span>
+            <span className="sr-only">Increase</span>
           </Button>
         </div>
       </div>
@@ -113,7 +128,7 @@ function UserCartItemsContent({ cartItem }) {
         </p>
         <Trash
           onClick={() => handleCartItemDelete(cartItem)}
-          className="cursor-pointer mt-1"
+          className="cursor-pointer mt-1 hover:text-red-500 transition-colors"
           size={20}
         />
       </div>

@@ -1,75 +1,116 @@
 import { HousePlug, LogOut, Menu, ShoppingCart, UserCog } from "lucide-react";
-import {Link,useNavigate,} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 import { shoppingViewHeaderMenuItems } from "@/config";
-import {DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel, DropdownMenuSeparator,DropdownMenuTrigger,} from "../ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { logoutUser } from "@/store/auth-slice";
 import { Label } from "../ui/label";
+import { AuroraText } from "@/components/magicui/aurora-text";
+import { useState, useEffect } from "react";
+import UserCartWrapper from "./cart-wrapper";
+import UserCartItemsContent from "./cart-items-content";
+import { fetchCartItems } from "@/store/shop/cart-slice";
 
-function MenuItems(){
-  return <nav className= 'flex flex-col mb-3 lg:mb-0 lg:items-center gap-6 lg:flex-row'>
-    {
-      shoppingViewHeaderMenuItems.map((menuItem) => (
-      <Link className="text-sm font-medium hover:scale-115 duration-200"
-      key = {menuItem.id} 
-      to={menuItem.path}>{menuItem.label}
-      </Link>
-    ))}
-  </nav>
+
+function MenuItems() {
+  return (
+    <nav className="flex flex-col mb-3 lg:mb-0 lg:items-center gap-9 lg:flex-row">
+      {shoppingViewHeaderMenuItems.map((menuItem) => (
+        <Link
+          className="text-xl font-bold  hover:scale-115 duration-500"
+          key={menuItem.id}
+          to={menuItem.path}
+        >
+          {menuItem.label}
+        </Link>
+      ))}
+    </nav>
+  );
 }
 
-function HeaderRightContent(){
-    const {user} = useSelector((state) => state.auth);
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
+function HeaderRightContent() {
+  const { user } = useSelector((state) => state.auth);
+    const {cartItems} = useSelector(state => state.shopCart)
+  
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [openCartSheet, setOpenCartSheet] = useState(false);
 
-    function handleLogout(){
-      dispatch(logoutUser())
-    }
+  function handleLogout() {
+    dispatch(logoutUser());
+  }
 
-  return <div className = 'flex lg:items-center lg flex-row flex-col gap-4'>
-    <Button variant ='outline' size='icon'>
-      <ShoppingCart className="w-6 h-6"/>
-      <span className="sr-only">User cart</span>
-    </Button>
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Avatar className = 'bg-black cursor-pointer hover:scale-105'>
-          <AvatarFallback className = 'bg-black text-white font-extrabold'>
-            {user?.userName?.[0].toUpperCase()}
-          </AvatarFallback>
-        </Avatar>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent side="right" className="w-56 bg-white">
-        <DropdownMenuLabel className="font-extrabold text-lg ">Logged in as {user?.userName}</DropdownMenuLabel>
-        <DropdownMenuSeparator className="h-px border-2"/>
-        <DropdownMenuItem className="cursor-pointer hover:scale-105 duration-200" onClick={() => navigate('/shop/account')}>
-          <UserCog className = 'mr-2 h-6 w-6 stroke-[3] '  />
-          Account
-        </DropdownMenuItem >
-        <DropdownMenuSeparator className="h-px "/>
-        <DropdownMenuItem className="cursor-pointer hover:scale-105 transition-transform duration-200" onClick ={handleLogout} >
-          <LogOut className = 'mr-2 h-6 w-6 stroke-[3]  '/>
-          Logout
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  </div>
+  useEffect (()=> {
+    dispatch(fetchCartItems(user?.id))
+  }, [dispatch])
+
+  return (
+    <div className="flex lg:items-center lg flex-row flex-col gap-4">
+      <Sheet open= {openCartSheet} onOpenChange = {()=> setOpenCartSheet(false)}>
+        <Button onClick={()=>setOpenCartSheet(true)} variant="outline" size="icon">
+          <ShoppingCart className="w-6 h-6" />
+          <span className="sr-only">User cart</span>
+        </Button>
+        <UserCartWrapper cartItems = {cartItems &&  cartItems.items && cartItems.items.length > 0 ? cartItems.items : []} />
+      </Sheet>
+      <DropdownMenu>
+        <DropdownMenuTrigger
+          asChild
+          className="shadow-2xl shadow-[0_0_8px_hsl(var(--primary))]"
+        >
+          <Avatar className="bg-black cursor-pointer hover:scale-105 ">
+            <AvatarFallback className="bg-black text-white font-extrabold">
+              {user?.userName?.[0].toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent side="right" className="w-56 bg-white">
+          <DropdownMenuLabel className="font-extrabold text-lg ">
+            Logged in as {user?.userName}
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator className="h-px border-2" />
+          <DropdownMenuItem
+            className="cursor-pointer hover:scale-105 duration-200"
+            onClick={() => navigate("/shop/account")}
+          >
+            <UserCog className="mr-2 h-6 w-6 stroke-[3] " />
+            Account
+          </DropdownMenuItem>
+          <DropdownMenuSeparator className="h-px " />
+          <DropdownMenuItem
+            className="cursor-pointer hover:scale-105 transition-transform duration-200"
+            onClick={handleLogout}
+          >
+            <LogOut className="mr-2 h-6 w-6 stroke-[3]  " />
+            Logout
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
 }
-
 function ShoppingHeader() {
-
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
-        <Link to="/shop/home" className="flex items-center gap-2">
-          <HousePlug className="h-6 w-6" />
-          <span className="font-extrabold text-2xl ]">Ecommerce</span>
-        </Link>
-
+        <div className="border-3 rounded-md border-primary bg-black shadow-md shadow-primary ">
+          <Link to="/shop/home" className="flex items-center gap-2 mr-2 ">
+            <HousePlug className="h-9 w-9 stroke-2 text-white  bg-primary " />
+            <span className="text-primary text-glow text-2xl font-extrabold ">
+              Ecommerce
+            </span>
+          </Link>
+        </div>
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="outline" size="icon" className="lg:hidden">
@@ -78,16 +119,16 @@ function ShoppingHeader() {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-full max-w-xs bg-white">
-            <MenuItems/>
-            <HeaderRightContent/>
+            <MenuItems />
+            <HeaderRightContent />
           </SheetContent>
         </Sheet>
         <div className="hidden lg:block">
-         <MenuItems/>
+          <MenuItems />
         </div>
-          <div className="hidden lg:block">
-            <HeaderRightContent/>
-          </div> 
+        <div className="hidden lg:block">
+          <HeaderRightContent />
+        </div>
       </div>
     </header>
   );
