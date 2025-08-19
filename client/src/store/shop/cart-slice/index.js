@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// ✅ FIXED: Add credentials for authentication
+// ✅ Ensure cookies/session are sent
 axios.defaults.withCredentials = true;
 
 const API_BASE = "http://localhost:5000/api/shop/cart";
@@ -22,7 +22,7 @@ export const addToCart = createAsyncThunk(
         productId,
         quantity,
       });
-      return data; // Expecting the backend to return full cart array
+      return data; // backend should return full cart
     } catch (error) {
       return rejectWithValue(
         error.response?.data || { success: false, message: "Failed to add to cart" }
@@ -37,7 +37,7 @@ export const fetchCartItems = createAsyncThunk(
   async (userId, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(`${API_BASE}/get/${userId}`);
-      return data; // Expecting full cart array
+      return data; // backend should return full cart
     } catch (error) {
       return rejectWithValue(
         error.response?.data || { success: false, message: "Failed to fetch cart" }
@@ -52,7 +52,7 @@ export const deleteCartItem = createAsyncThunk(
   async ({ userId, productId }, { rejectWithValue }) => {
     try {
       const { data } = await axios.delete(`${API_BASE}/${userId}/${productId}`);
-      return data; // Expecting updated cart array
+      return data; // backend should return updated cart
     } catch (error) {
       return rejectWithValue(
         error.response?.data || { success: false, message: "Failed to delete item" }
@@ -71,10 +71,25 @@ export const updateCartQuantity = createAsyncThunk(
         productId,
         quantity,
       });
-      return data; // Expecting updated cart array
+      return data; // backend should return updated cart
     } catch (error) {
       return rejectWithValue(
         error.response?.data || { success: false, message: "Failed to update quantity" }
+      );
+    }
+  }
+);
+
+// CLEAR CART
+export const clearCart = createAsyncThunk(
+  "cart/clearCart",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.delete(`${API_BASE}/clear/${userId}`);
+      return data; // backend may return the cart, but we won't rely on it
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data || { success: false, message: "Failed to clear cart" }
       );
     }
   }
@@ -97,7 +112,7 @@ const shoppingCartSlice = createSlice({
       })
       .addCase(addToCart.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.cartItems = action.payload.data || action.payload || []; // Handle different response formats
+        state.cartItems = action.payload?.data ?? action.payload ?? [];
       })
       .addCase(addToCart.rejected, (state, action) => {
         state.isLoading = false;
@@ -111,7 +126,7 @@ const shoppingCartSlice = createSlice({
       })
       .addCase(fetchCartItems.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.cartItems = action.payload.data || action.payload || [];
+        state.cartItems = action.payload?.data ?? action.payload ?? [];
       })
       .addCase(fetchCartItems.rejected, (state, action) => {
         state.isLoading = false;
@@ -125,7 +140,7 @@ const shoppingCartSlice = createSlice({
       })
       .addCase(updateCartQuantity.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.cartItems = action.payload.data || action.payload || [];
+        state.cartItems = action.payload?.data ?? action.payload ?? [];
       })
       .addCase(updateCartQuantity.rejected, (state, action) => {
         state.isLoading = false;
@@ -139,9 +154,22 @@ const shoppingCartSlice = createSlice({
       })
       .addCase(deleteCartItem.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.cartItems = action.payload.data || action.payload || [];
+        state.cartItems = action.payload?.data ?? action.payload ?? [];
       })
       .addCase(deleteCartItem.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload?.message || action.error.message;
+      })
+
+      // CLEAR CART — force empty immediately (optimistic UI)
+      .addCase(clearCart.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(clearCart.fulfilled, (state) => {
+        state.items = [];
+      })
+      .addCase(clearCart.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload?.message || action.error.message;
       });

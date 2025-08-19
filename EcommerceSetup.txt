@@ -39,4 +39,9 @@ dist/
 -npm install tailwindcss-animate
 install @radix-ui/react-avatar
 
+____For payments_____
+Go to server folder
+instal(npm i paypal-rest-sdk)
+
+
 

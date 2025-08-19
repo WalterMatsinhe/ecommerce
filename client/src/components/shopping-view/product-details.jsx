@@ -4,13 +4,39 @@ import { Separator } from "../ui/separator";
 import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
 import { StarIcon } from "lucide-react";
 import { Input } from "../ui/input";
+import { toast } from "sonner";
+import { addToCart,fetchCartItems} from "@/store/shop/cart-slice";
+import { useDispatch, useSelector} from "react-redux";
+import { setProductDetails } from "@/store/shop/products-slice";
 
 
 function ProductDetailsDialog({ open, setOpen, productDetails }) {
+
+  const dispatch = useDispatch()
+  const {user} = useSelector(state => state.auth)
+
+    function handleAddtoCart(getCurrentProductId) {
+      console.log("add to cart:", getCurrentProductId);
+      dispatch(addToCart({userId : user?.id, productId : getCurrentProductId, quantity: 1})).
+      then( (data) => {
+        if(data?.payload?.success){
+          dispatch(fetchCartItems(user?.id));
+          toast.success('Product added to cart')
+        }
+      });
+   
+    }
+
+    function handleDialogClose(){
+      setOpen(false);
+      dispatch(setProductDetails());
+    } 
+
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="bg-white grid grid-cols-2 gap-8 sm:p-12 max-w-[90vw] sm:max-w-[80vw] lg:max-w-[70vw]">
-        <div className="relative  rounded-lg">
+    <Dialog open={open} onOpenChange={handleDialogClose}>
+      <DialogContent className="bg:black/85  grid grid-cols-2 gap-8 sm:p-12 max-w-[90vw] sm:max-w-[80vw] lg:max-w-[70vw] mt-13 py-5">
+        <div className="relative  rounded-lg ">
           {productDetails?.image ? (
             <img
               src={productDetails.image}
@@ -61,7 +87,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
             <span className="text-muted-foreground">(4.5)</span>
           </div>
           <div className=" flex items-center justify-center mt-5">
-            <Button className="text-white w-full border-2 border-black hover:scale-110 duration-400 mb-5">
+            <Button onClick = {()=> handleAddtoCart(productDetails?._id)} className="text-white w-full border-2 border-black hover:scale-110 duration-400 mb-5">
               Add to cart
             </Button>
           </div>

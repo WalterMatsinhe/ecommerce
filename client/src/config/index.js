@@ -79,6 +79,7 @@ export const addProductFormElements = [
       { id: 'levis', label: 'Levis' },
       { id: 'lacoste', label: 'Lacoste' },
       { id: 'zara', label: 'Zara' },
+      { id: 'ellesse', label: 'Ellesse' },
     ],
   },
   {
@@ -125,8 +126,8 @@ export const shoppingViewHeaderMenuItems= [
     path : '/shop/listing'
   },
   {
-    id : 'woman',
-    label : 'Woman',
+    id : 'women',
+    label : 'Women',
     path : '/shop/listing'
   },
    
@@ -142,13 +143,13 @@ export const shoppingViewHeaderMenuItems= [
   },
   {
     id : 'accessories',
-    label : 'Acessories',
+    label : 'Accessories',
     path : '/shop/listing'
   },
 ];
 export const categoryOptionsMap = {
   'men' : 'Men',
-  'women' : 'Woman',
+  'women' : 'Women',
   'kids' : 'Kids',
   'accessories' : 'Accessories',
   'footwear' : 'Footwear',
@@ -181,3 +182,41 @@ export const filterOptions= {
     {id: 'Lacoste', label:'Lacoste'},
   ],
 }
+export const addressFormControls = [
+  {
+    label: "Address",
+    name: "address",
+    componentType: "input",
+    type: "text",
+    placeholder: "Enter your address",
+  },
+  {
+    label: "City",
+    name: "city",
+    componentType: "input",
+    type: "text",
+    placeholder: "Enter your city",
+  },
+  {
+    label: "Pincode",
+    name: "pincode",
+    componentType: "input",
+    type: "text",
+    placeholder: "Enter your pincode",
+  },
+  {
+    label: "Phone",
+    name: "phone",
+    componentType: "input",
+    type: "text",
+    placeholder: "Enter your phone number",
+  },
+  {
+    label: "Notes",
+    name: "notes",
+    componentType: "textarea",
+    placeholder: "Enter any additional notes",
+  },
+];
+
+

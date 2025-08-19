@@ -20,9 +20,9 @@ function UserCartWrapper({ cartItems, setOpenCartSheet }) {
       : 0;
 
   return (
-    <SheetContent className="sm:max-w-md bg-white">
+    <SheetContent className="sm:max-w-md  bg-black/93 backdrop-blur-md border-neon overflow-y-scroll">
       <SheetHeader>
-        <SheetTitle>Your Cart</SheetTitle>
+        <SheetTitle className="flex items-center justify-center text-neon-red font-sans text-3xl" >Your Cart</SheetTitle>
       </SheetHeader>
 
       <div className="mt-8 space-y-4">
@@ -30,7 +30,7 @@ function UserCartWrapper({ cartItems, setOpenCartSheet }) {
           ? cartItems.map((item, index) => (
               <UserCartItemsContent
                 cartItem={item}
-                key={item._id || item.id || `cart-item-${index}`} // ✅ Guaranteed unique key
+                key={item._id || item.id || `cart-item-${index}`} 
               />
             ))
           : null}
@@ -48,7 +48,7 @@ function UserCartWrapper({ cartItems, setOpenCartSheet }) {
           navigate("/shop/checkout");
           setOpenCartSheet(false);
         }}
-        className="px-4 mt-6 ml-4 mr-4"
+        className="px-4 mt-6 ml-4 mb-4 mr-4 bg-red-600 border-neon-red hover:scale-103 text-white" variant="ghost"
       >
         Checkout
       </Button>

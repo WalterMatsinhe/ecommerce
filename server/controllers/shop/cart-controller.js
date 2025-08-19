@@ -68,9 +68,9 @@ const fetchCartItems = async (req, res) => {
     });
 
     if (!cart) {
-      return res.status(404).json({
-        success: false,
-        message: "Cart not found!",
+      return res.status(200).json({
+        success: true,
+        data: { userId, items: [] }, // ✅ always return an empty cart
       });
     }
 
@@ -229,9 +229,49 @@ const deleteCartItem = async (req, res) => {
   }
 };
 
+const clearCart = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: "User id is mandatory!",
+      });
+    }
+
+    // ✅ update directly in DB
+    const cart = await Cart.findOneAndUpdate(
+      { userId },
+      { $set: { items: [] } },
+      { new: true }
+    );
+
+    if (!cart) {
+      return res.status(404).json({
+        success: false,
+        message: "Cart not found!",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Cart cleared successfully!",
+      data: cart,
+    });
+  } catch (error) {
+    console.error("Error clearing cart:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error clearing cart",
+    });
+  }
+};
+
 module.exports = {
   addToCart,
   updateCartItemQty,
   deleteCartItem,
   fetchCartItems,
+  clearCart,
 };

@@ -42,7 +42,7 @@ function ShoppingListing() {
     (state) => state.shopProducts
   );
   const {user} = useSelector((state) => state.auth);
-   const { cartItems } = useSelector((state) => state.shopCart);
+  const { cartItems } = useSelector((state) => state.shopCart);
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -136,7 +136,7 @@ function ShoppingListing() {
       <ProductFilter filters={filters} handleFilter={handleFilter} />
 
       <div className="bg-background w-full rounded-lg shadow-sm relative z-0">
-        <div className="p-4 border-b flex items-center justify-between">
+        <div className="p-4 border-b flex items-center justify-between bg-primary-foreground ">
           <h2 className="text-lg font-extrabold mr-2">All Products</h2>
           <div className="flex items-center gap-2">
             <span className="text-muted-foreground mr-2">
@@ -164,6 +164,7 @@ function ShoppingListing() {
                     <DropdownMenuRadioItem
                       key={sortItem.id}
                       value={sortItem.id}
+
                     >
                       {sortItem.label}
                     </DropdownMenuRadioItem>
@@ -175,7 +176,7 @@ function ShoppingListing() {
         </div>
 
         {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 p-4 relative z-0">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 p-4 relative z-0 mt-4">
           {productList && productList.length > 0 ? (
             productList.map((productItem) => (
               <ShoppingProductTile

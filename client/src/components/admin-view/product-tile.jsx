@@ -24,7 +24,7 @@ function AdminProductTile({product}){
                 <CardFooter className='flex justify-between items-center'> 
                     <div className="flex justify-between items-center w-full">
                          <Button>Edit</Button>
-                          <Button className="bg-red-600 text-white">Delete</Button>
+                          <Button  variant="ghost" className="bg-red-600 text-white">Delete</Button>
                     </div>
                 </CardFooter>
             </div>

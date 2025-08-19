@@ -30,6 +30,7 @@ function ProductFilter({ filters, handleFilter }) {
                       onCheckedChange={(checked) =>
                         handleFilter(keyItem, option.id, checked)
                       }
+                      className="checkbox-neon"
                     />
                     {option.label}
                   </Label>

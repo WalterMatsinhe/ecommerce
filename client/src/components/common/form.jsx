@@ -37,6 +37,7 @@ function CommonForm({
                 [getControlItem.name]: event.target.value,
               })
             }
+            className = 'bg-white text-black'
           />
         );
         break;
@@ -63,7 +64,7 @@ function CommonForm({
                   : value}
               </SelectValue>
             </SelectTrigger>
-            <SelectContent className="z-[10001] max-h-[200px] overflow-auto">
+            <SelectContent className="z-[10001] max-h-[200px] overflow-auto bg-white text-black">
               {getControlItem.options?.map((optionItem) => (
                 <SelectItem
                   key={
@@ -100,6 +101,7 @@ function CommonForm({
                 [getControlItem.name]: event.target.value,
               })
             }
+            className = 'bg-white text-black'
           />
         );
         break;
@@ -118,6 +120,7 @@ function CommonForm({
                 [getControlItem.name]: event.target.value,
               })
             }
+            className = 'bg-white text-black'
           />
         );
         break;
@@ -130,13 +133,13 @@ function CommonForm({
     <form onSubmit={onSubmit}>
       <div className="flex flex-col gap-3">
         {formControls.map((controlItem) => (
-          <div className="grid w-full gap-1.5" key={controlItem.name}>
+          <div className="grid w-full gap-2" key={controlItem.name}>
             <Label className="mb-1">{controlItem.label}</Label>
             {renderInputsByComponentType(controlItem)}
           </div>
         ))}
       </div>
-      <Button disabled={isBtnDisabled} type="submit" className="mt-2 w-full">
+      <Button disabled={isBtnDisabled} type="submit" className="mt-6 w-full shadow-md border-neon text-white hover:scale-103">
         {buttonText || "Submit"}
       </Button>
     </form>

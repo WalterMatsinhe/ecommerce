@@ -22,76 +22,39 @@
   --animate-meteor: meteor 5s linear infinite;
 
   @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
   }
+
   @keyframes pulse-subtle {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.8;
-    }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
   }
+
   @keyframes fade-in {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
+
   @keyframes meteor {
-    0% {
-      transform: rotate(215deg) translateX(0);
-      opacity: 1;
-    }
-    70% {
-      opacity: 1;
-    }
-    100% {
-      transform: rotate(215deg) translateX(-500px);
-      opacity: 0;
-    }
+    0% { transform: rotate(215deg) translateX(0); opacity: 1; }
+    70% { opacity: 1; }
+    100% { transform: rotate(215deg) translateX(-500px); opacity: 0; }
   }
 }
 
 @layer base {
   :root {
-    --background-image: url('/light.png');
-    --foreground: 222 47% 11%;
-
-    --card: 0 0% 95%;
-
-    --primary: 205 100% 50%;
-    --primary-foreground: 210 40% 98%;
-
-    --border: 205 100% 50%;
-  }
-
-  .dark {
-    --background-image: url('/dark.png');
     --background: 0 0% 0%;
-    --foreground: 0 0% 98%;
-
-    --card: 0 0% 10%;
-
-    --primary: 205 100% 50%;
-    --primary-foreground: 210 31% 91%;
-
-    --border: 205 100% 50%;
+    --foreground: 0 0% 100%;
+    --card:0, 0%, 19%;
+    --primary: 0, 0%, 24%;
+    --primary-foreground: 0, 0%, 6%;
+    --border:0 0% 100%;
   }
 
   * {
-    @apply border-border;
+    @apply border-border outline-none;
   }
 
   html {
@@ -101,11 +64,7 @@
   body {
     @apply bg-background text-foreground transition-colors duration-300;
     font-feature-settings: "rlig" 1, "calt" 1;
-    background-image: var(--background-image);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed;
+    
   }
 }
 
@@ -113,26 +72,16 @@
   margin-inline: auto;
   padding-inline: 2rem;
 
-  @media (width >= 640px) {
-    max-width: 640px;
-  }
-  @media (width >= 768px) {
-    max-width: 768px;
-  }
-  @media (width >= 1024px) {
-    max-width: 1024px;
-  }
-  @media (width >= 1280px) {
-    max-width: 1280px;
-  }
-  @media (width >= 1400px) {
-    max-width: 1400px;
-  }
+  @media (width >= 640px) { max-width: 640px; }
+  @media (width >= 768px) { max-width: 768px; }
+  @media (width >= 1024px) { max-width: 1024px; }
+  @media (width >= 1280px) { max-width: 1280px; }
+  @media (width >= 1400px) { max-width: 1400px; }
 }
 
 @utility text-glow {
   @apply relative;
-  text-shadow: 0 0 15px rgba(0, 124, 176, 155.5);
+  text-shadow: 0 0 15px rgba(0, 124, 176, 0.55);
 }
 
 @utility card-hover {
@@ -148,9 +97,51 @@
 
 @utility cosmic-button {
   @apply px-6 py-2 rounded-full bg-primary text-primary-foreground font-medium 
-         transition-all duration-300 hover:shadow-[0_0_1px_rgba(0,124,176,5.5)]
+         transition-all duration-300 hover:shadow-[0_0_1px_rgba(0,124,176,0.55)]
          hover:scale-105 active:scale-95;
 }
+@utility text-neon {
+  color: hsl(168, 100%, 50%);
+  text-shadow:
+    0 0 2px #00FFD5,
+    0 0 4px #00FFD5,
+    0 0 8px #00FFD5;
+}
+@utility text-neon-red {
+  color: hsl(0, 100%, 50%); /* pure red */
+  text-shadow:
+    0 0 2px #FF0000,
+    0 0 4px #FF0000;
+}
+@utility border-neon {
+   border: 3px solid hsl(168, 100%, 50%);
+    box-shadow:
+      0 0 2px #00FFD5,
+      0 0 4px #00FFD5,
+      0 0 8px #00FFD5;
+}
+@utility border-neon-red {
+   border: 3px solid hsl(0, 100%, 50%); /* pure red */
+  box-shadow:
+    0 0 2px #FF0000,
+    0 0 4px #FF0000,
+    0 0 8px #FF0000;
+}
+@utility shadow-primary {
+    box-shadow:
+      0 0 6px #00FFD5,
+      0 0 12px #00FFD5,
+      0 0 24px #00FFD5;
+  }
+@layer utilities {
+  .checkbox-neon[data-state="checked"] svg {
+     color: hsl(168, 100%, 50%);
+    filter: drop-shadow(0 0 4px #00FFD5) drop-shadow(0 0 8px #00FFD5);
+    background-color: black
+  }
+}
+
+  
 
 #root {
   max-width: 100%;
@@ -161,36 +152,12 @@
 
 @theme inline {
   --animate-aurora: aurora 8s ease-in-out infinite alternate;
+
   @keyframes aurora {
-  0% {
-    background-position: 0% 50%;
-    transform: rotate(-5deg) scale(0.9);
-    }
-  25% {
-    background-position: 50% 100%;
-    transform: rotate(5deg) scale(1.1);
-    }
-  50% {
-    background-position: 100% 50%;
-    transform: rotate(-3deg) scale(0.95);
-    }
-  75% {
-    background-position: 50% 0%;
-    transform: rotate(3deg) scale(1.05);
-    }
-  100% {
-    background-position: 0% 50%;
-    transform: rotate(-5deg) scale(0.9);
-    }
+    0%   { background-position: 0% 50%; transform: rotate(-5deg) scale(0.9); }
+    25%  { background-position: 50% 100%; transform: rotate(5deg) scale(1.1); }
+    50%  { background-position: 100% 50%; transform: rotate(-3deg) scale(0.95); }
+    75%  { background-position: 50% 0%; transform: rotate(3deg) scale(1.05); }
+    100% { background-position: 0% 50%; transform: rotate(-5deg) scale(0.9); }
   }
 }
-
-@layer base {
-  * {
-    @apply border-border outline-none;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-

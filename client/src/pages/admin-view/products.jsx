@@ -109,7 +109,7 @@ function AdminProductTile({
             size="sm"
             variant="outline"
             onClick={handleEdit}
-            className="flex-1 hover:bg-gray-50"
+            className="flex-1 bg-primary-foreground border-2 border-red-600"
           >
             Edit
           </Button>
@@ -117,7 +117,7 @@ function AdminProductTile({
             size="sm"
             variant="destructive"
             onClick={handleDeleteClick}
-            className="flex-1 bg-red-600 text-white border-3 border-black"
+            className="flex-1 bg-red-600 border-neon-red hover:scale-105 text-white "
           >
             Delete
           </Button>
@@ -243,8 +243,8 @@ function AdminProducts() {
     return (
       <div className="w-full min-h-[400px] flex items-center justify-center">
         <div className="text-center space-y-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="text-gray-600">Loading products...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-neon mx-auto"></div>
+          <p className="text-neon">Loading products...</p>
         </div>
       </div>
     );
@@ -253,10 +253,10 @@ function AdminProducts() {
   return (
     <div className="w-full space-y-6 p-4">
       {/* Header with Add Button */}
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center text-foreground">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Products</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-2xl font-bold">Products</h1>
+          <p className=" mt-1">
             Manage your product inventory
           </p>
         </div>
@@ -315,12 +315,12 @@ function AdminProducts() {
 
       {/* Product Form Sheet */}
       <Sheet open={openCreateProductsDialog} onOpenChange={handleCloseDialog}>
-        <SheetContent side="right" className="flex flex-col h-full overflow-y-auto bg-white border-l border-gray-200 shadow-2xl w-[400px] sm:w-[540px] z-[100]">
+        <SheetContent side="right" className="flex flex-col h-full overflow-y-auto text-white bg-black/93 backdrop-blur-md  border-neon shadow-2xl w-[400px] sm:w-[540px] z-[100]">
           <SheetHeader className="space-y-2 pb-4">
-            <SheetTitle className="text-2xl flex items-center justify-center font-bold text-gray-900">
+            <SheetTitle className="text-2xl flex items-center justify-center font-bold">
               {currentEditedId !== null ? "Edit Product" : "Add New Product"}
             </SheetTitle>
-            <SheetDescription className="text-gray-600 text-center">
+            <SheetDescription className=" text-center">
               {currentEditedId !== null
                 ? "Make changes to your product information below."
                 : "Fill in the product details to add a new item to your catalog."
@@ -341,7 +341,7 @@ function AdminProducts() {
             <div className="form-container">
               <form onSubmit={onSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium  mb-1">
                     Product Title *
                   </label>
                   <input
@@ -355,7 +355,7 @@ function AdminProducts() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium mb-1">
                     Description *
                   </label>
                   <textarea
@@ -369,7 +369,7 @@ function AdminProducts() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium mb-1">
                     Category *
                   </label>
                   <select
@@ -388,7 +388,7 @@ function AdminProducts() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium  mb-1">
                     Brand *
                   </label>
                   <select
@@ -403,11 +403,13 @@ function AdminProducts() {
                     <option value="puma">Puma</option>
                     <option value="levis">Levi's</option>
                     <option value="lacoste">Lacoste</option>
+                    <option value="Zara">Zara</option>
+                    <option value="ellesse">Ellesse</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium  mb-1">
                     Price *
                   </label>
                   <input
@@ -423,7 +425,7 @@ function AdminProducts() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium mb-1">
                     Sale Price
                   </label>
                   <input
@@ -438,7 +440,7 @@ function AdminProducts() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium mb-1">
                     Total Stock *
                   </label>
                   <input
@@ -455,7 +457,7 @@ function AdminProducts() {
                 <button
                   type="submit"
                   disabled={!isFormValid() || imageLoadingState}
-                  className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-foreground focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200"
+                  className="w-full bg-primary text-white py-2 px-4 rounded-md hover:shadow-md shadow-black focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200"
                 >
                   {currentEditedId !== null ? "Update Product" : "Add Product"}
                 </button>
